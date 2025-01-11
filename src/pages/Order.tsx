@@ -7,10 +7,10 @@ import { calculateOrderTotalPrice, formatDate } from "../lib/helpers";
 import { IOrder } from "../interfaces/orders";
 import OrderImgDisplayFull from "../components/OrderImgDisplayFull";
 
-import { MapContainer } from "react-leaflet/MapContainer";
-import { TileLayer } from "react-leaflet/TileLayer";
+import { MapContainer, Marker, Popup } from "react-leaflet";
+import { TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { Marker, Popup } from "react-leaflet";
+import { LatLngBoundsExpression, LatLngExpression } from "leaflet";
 function Order() {
   const { id } = useParams();
 
@@ -33,17 +33,16 @@ function Order() {
   }, [id]);
 
   const bounds = [
-    [41.235, 22.357], // Southwest corner
-    [44.216, 28.295], // Northeast corner
+    [41.235, 22.357],
+    [44.216, 28.295],
   ];
-  const defaultCenter = [51.505, -0.09];
 
   const mapCenter = order?.mapLocation?.[0]
     ? [
         parseFloat(order.mapLocation[0].lat),
         parseFloat(order.mapLocation[0].lng),
       ]
-    : [51.505, -0.09]; // Default center if mapLocation is unavailable
+    : [51.505, -0.09]; //default center
 
   if (isLoading) return <Spinner />;
   return (
@@ -134,11 +133,11 @@ function Order() {
         </p>
         <div className="mt-5 w-full h-full m-auto rounded-lg overflow-hidden border border-black">
           <MapContainer
-            center={mapCenter}
+            center={mapCenter as LatLngExpression}
             zoom={13}
             scrollWheelZoom={true}
             style={{ height: "100%", width: "100%" }}
-            maxBounds={bounds}
+            maxBounds={bounds as LatLngBoundsExpression}
             minZoom={8}
             maxBoundsViscosity={1.0}
           >
@@ -146,7 +145,7 @@ function Order() {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={mapCenter} draggable={true}>
+            <Marker position={mapCenter as LatLngExpression} draggable={true}>
               <Popup>You are here</Popup>
             </Marker>
           </MapContainer>

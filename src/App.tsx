@@ -7,13 +7,8 @@ import Statistics from "./pages/Statistics";
 import Activity from "./pages/Activity";
 import LowStock from "./pages/LowStock";
 import LowStockProduct from "./pages/LowStockProduct";
-import DeliveredOrders from "./pages/DeliveredOrders";
-import RejectedOrders from "./pages/RejectedOrders";
-import ShippingOrders from "./pages/ShippingOrders";
-import UnconfirmedOrders from "./pages/UnconfirmedOrders";
 import OrdersList from "./pages/OrdersList";
 import Order from "./pages/Order";
-import Map from "./components/Map";
 
 function App() {
   return (

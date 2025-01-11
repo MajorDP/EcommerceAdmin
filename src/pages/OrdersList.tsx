@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 
 import EmptyMessage from "../components/EmptyMessage";
 import Spinner from "../components/Spinner";
-import OrderImgDisplay from "../components/OrderImgDisplayMini";
 import { Link } from "react-router-dom";
 
 import { IOrder } from "../interfaces/orders";
-import { getOrdersByStatus, getRejectedOrders } from "../api/services";
+import { getOrdersByStatus } from "../api/services";
 import { calculateOrderTotalPrice, formatDate } from "../lib/helpers";
 import OrderImgDisplayMini from "../components/OrderImgDisplayMini";
 
