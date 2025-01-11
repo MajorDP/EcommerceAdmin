@@ -10,7 +10,6 @@ import RemoveProductModal from "../components/modals/RemoveProductModal";
 
 function LowStockProduct() {
   const { id } = useParams();
-  console.log(id);
 
   const [product, setProduct] = useState<Product | null>(null);
   const [productOwner, setProductOwner] = useState<IProductOwner | null>(null);

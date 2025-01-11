@@ -6,19 +6,22 @@ import OrderImgDisplay from "../components/OrderImgDisplayMini";
 import { Link } from "react-router-dom";
 
 import { IOrder } from "../interfaces/orders";
-import { getRejectedOrders } from "../api/services";
+import { getOrdersByStatus, getRejectedOrders } from "../api/services";
 import { calculateOrderTotalPrice, formatDate } from "../lib/helpers";
 import OrderImgDisplayMini from "../components/OrderImgDisplayMini";
 
-function RejectedOrders() {
-  const [rejectedOrdersData, setRejectedOrdersData] = useState<{
+interface IProps {
+  status: string;
+}
+function OrdersList({ status }: IProps) {
+  const [ordersData, setOrdersData] = useState<{
     data: IOrder[];
     count: number;
   }>({ data: [], count: 0 });
 
   const [page, setPage] = useState(0);
   const perPage = 5;
-  const pageCount = Math.ceil(rejectedOrdersData.count / perPage);
+  const pageCount = Math.ceil(ordersData.count / perPage);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -31,11 +34,15 @@ function RejectedOrders() {
         setIsLoading(true);
         try {
           //@ts-expect-error data is of correct type
-          const { data, count } = await getRejectedOrders(startIndex, endIndex);
-          setRejectedOrdersData({ data: data as IOrder[], count });
+          const { data, count } = await getOrdersByStatus(
+            status,
+            startIndex,
+            endIndex
+          );
+          setOrdersData({ data: data as IOrder[], count });
         } catch (error) {
           console.error("Error fetching data:", error);
-          setRejectedOrdersData({ data: [], count: 0 });
+          setOrdersData({ data: [], count: 0 });
         } finally {
           setIsLoading(false);
         }
@@ -48,14 +55,34 @@ function RejectedOrders() {
   return (
     <div className="bg-slate-900 w-full h-screen text-white overflow-y-hidden">
       <div className="w-[80%] h-screen m-auto overflow-y-scroll scrollbar-hide">
-        <p className="text-center font-semibold p-1 text-4xl bg-gradient-to-r from-orange-500 to-red-600 bg-clip-text text-transparent">
-          Rejected orders
+        <p
+          className={`text-center font-semibold p-1 text-4xl bg-gradient-to-r ${
+            status === "Shipping"
+              ? "from-blue-500 to-teal-600"
+              : status === "Rejected"
+              ? "from-orange-500 to-red-600"
+              : status === "Unconfirmed"
+              ? "from-orange-500 to-orange-500"
+              : "from-green-500 to-lime-500"
+          } bg-clip-text text-transparent`}
+        >
+          {status} orders
         </p>
         {!isLoading ? (
-          rejectedOrdersData?.data.length > 0 ? (
+          ordersData?.data.length > 0 ? (
             <>
               <ul className="text-black font-semibold">
-                <li className="flex flex-row items-center justify-between bg-gradient-to-r from-red-400 to-red-800 mb-4 mt-4 rounded-lg p-1">
+                <li
+                  className={`flex flex-row items-center justify-between bg-gradient-to-r ${
+                    status === "Shipping"
+                      ? "from-blue-400 to-blue-500"
+                      : status === "Rejected"
+                      ? "from-red-400 to-red-800"
+                      : status === "Unconfirmed"
+                      ? "from-orange-400 to-orange-500"
+                      : "from-green-400 to-green-500"
+                  } mb-4 mt-4 rounded-lg p-1`}
+                >
                   <div className="flex flex-row items-center justify-start w-[40%]">
                     <p className="w-[130px] flex items-center justify-center">
                       Image
@@ -66,13 +93,32 @@ function RejectedOrders() {
                   </div>
                   <p className="w-[20%] text-center">Prod. count</p>
                   <p className="w-[20%] text-center">Total</p>
-                  <p className="w-[20%] text-center">Rejected on</p>
+                  <p className="w-[20%] text-center">
+                    {status === "Shipping"
+                      ? "Shipped "
+                      : status === "Rejected"
+                      ? "Rejected "
+                      : status === "Unconfirmed"
+                      ? "Ordered "
+                      : "Delivered "}
+                    on
+                  </p>
                 </li>
               </ul>
               <ul>
-                {rejectedOrdersData?.data.map((order: IOrder) => (
-                  <Link to={`/order/${order.id}`} key={order.id}>
-                    <li className="shadow-2xl hover:scale-95 cursor-pointer duration-150 flex flex-row items-center justify-between bg-gradient-to-r from-red-400 to-red-800 mb-4 rounded-lg h-[130px]">
+                {ordersData?.data.map((order: IOrder) => (
+                  <Link to={`/orders/${order.id}`} key={order.id}>
+                    <li
+                      className={`shadow-2xl hover:scale-95 cursor-pointer duration-150 flex flex-row items-center justify-between bg-gradient-to-r ${
+                        status === "Shipping"
+                          ? "from-blue-400 to-blue-800"
+                          : status === "Rejected"
+                          ? "from-red-400 to-red-800"
+                          : status === "Unconfirmed"
+                          ? "from-orange-400 to-orange-500"
+                          : "from-green-400 to-green-500"
+                      } mb-4 rounded-lg h-[130px]`}
+                    >
                       <div className="flex flex-row items-center justify-start w-[40%] rounded-tl-lg">
                         <OrderImgDisplayMini order={order} />
                         <p className="text-ellipsis overflow-hidden whitespace-nowrap ml-2 text-center">
@@ -105,7 +151,7 @@ function RejectedOrders() {
                 </p>
                 <button
                   className="bg-gray-500 rounded-lg px-4 py-2 font-semibold"
-                  disabled={rejectedOrdersData?.data.length <= perPage}
+                  disabled={ordersData?.data.length <= perPage}
                   onClick={() => setPage(page + 1)}
                 >
                   Next
@@ -123,4 +169,4 @@ function RejectedOrders() {
   );
 }
 
-export default RejectedOrders;
+export default OrdersList;

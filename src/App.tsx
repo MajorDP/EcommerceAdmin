@@ -11,6 +11,9 @@ import DeliveredOrders from "./pages/DeliveredOrders";
 import RejectedOrders from "./pages/RejectedOrders";
 import ShippingOrders from "./pages/ShippingOrders";
 import UnconfirmedOrders from "./pages/UnconfirmedOrders";
+import OrdersList from "./pages/OrdersList";
+import Order from "./pages/Order";
+import Map from "./components/Map";
 
 function App() {
   return (
@@ -20,11 +23,24 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/lowstocks" element={<LowStock />} />
           <Route path="/lowstocks/:id" element={<LowStockProduct />} />
-          <Route path="/unconfirmed" element={<UnconfirmedOrders />} />
-          <Route path="/shipping" element={<ShippingOrders />} />
-          <Route path="/delivered" element={<DeliveredOrders />} />
-          <Route path="/rejected" element={<RejectedOrders />} />
+          <Route
+            path="/unconfirmed"
+            element={<OrdersList status={"Unconfirmed"} />}
+          />
+          <Route
+            path="/shipping"
+            element={<OrdersList status={"Shipping"} />}
+          />
+          <Route
+            path="/delivered"
+            element={<OrdersList status={"Delivered"} />}
+          />
+          <Route
+            path="/rejected"
+            element={<OrdersList status={"Rejected"} />}
+          />
           <Route path="/orders" element={<Orders />} />
+          <Route path="/orders/:id" element={<Order />} />
           <Route path="/statistics" element={<Statistics />} />
           <Route path="/activity" element={<Activity />} />
         </Route>

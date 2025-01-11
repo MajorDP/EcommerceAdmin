@@ -8,12 +8,14 @@ import { Link } from "react-router-dom";
 import { IOrder } from "../interfaces/orders";
 import { getRejectedOrders } from "../api/services";
 import { calculateOrderTotalPrice, formatDate } from "../lib/helpers";
+import OrderImgDisplayMini from "../components/OrderImgDisplayMini";
 
 function ShippingOrders() {
   const [shippingOrdersData, setShippingOrdersData] = useState<{
     data: IOrder[];
     count: number;
   }>({ data: [], count: 0 });
+  console.log(shippingOrdersData);
 
   const [page, setPage] = useState(0);
   const perPage = 5;
@@ -73,7 +75,7 @@ function ShippingOrders() {
                   <Link to={`/order/${order.id}`} key={order.id}>
                     <li className="shadow-2xl hover:scale-95 cursor-pointer duration-150 flex flex-row items-center justify-between bg-gradient-to-r from-blue-400 to-blue-800 mb-4 rounded-lg h-[130px]">
                       <div className="flex flex-row items-center justify-start w-[40%] rounded-tl-lg">
-                        <OrderImgDisplay order={order} />
+                        <OrderImgDisplayMini order={order} />
                         <p className="text-ellipsis overflow-hidden whitespace-nowrap ml-2 text-center">
                           {order.id}
                         </p>

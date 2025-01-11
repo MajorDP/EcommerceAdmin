@@ -215,3 +215,37 @@ export const getUnconfirmedOrders = async (from, to) => {
   }
   return { data: unconfirmedOrders, count };
 };
+
+export const getOrdersByStatus = async (status, from, to) => {
+  let {
+    data: orders,
+    count,
+    error,
+  } = await supabase
+    .from("orders")
+    .select("*", { count: "exact" })
+    .eq("status", status)
+    .range(from, to);
+
+  if (error) {
+    console.log(`ERROR FETCHING ${status} ORDERS DATA: `, error.message);
+    return [];
+  }
+  return { data: orders, count };
+};
+
+export const getOrderById = async (id) => {
+  let { data: order, error } = await supabase
+    .from("orders")
+    .select("*")
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.log(`ERROR FETCHING ORDER DATA: `, error.message);
+    return [];
+  }
+
+  return order;
+};

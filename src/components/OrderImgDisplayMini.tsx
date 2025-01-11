@@ -1,7 +1,10 @@
-import { IOrderItem } from "../interfaces/orders";
+import { IOrder, IOrderItem } from "../interfaces/orders";
 
-//@ts-expect-error aaa
-function OrderImgDisplay({ order }) {
+interface IOrderImgDisplay {
+  order: IOrder;
+}
+
+function OrderImgDisplayMini({ order }: IOrderImgDisplay) {
   const imgLength =
     order.items.length === 1 ? 1 : order.items.length >= 4 ? 4 : 2;
 
@@ -33,4 +36,4 @@ function OrderImgDisplay({ order }) {
   );
 }
 
-export default OrderImgDisplay;
+export default OrderImgDisplayMini;
