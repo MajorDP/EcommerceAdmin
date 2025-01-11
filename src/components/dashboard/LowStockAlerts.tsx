@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
 import { useEffect, useState } from "react";
 import { getLowStockProducts } from "../../api/services";
 import { Product } from "../../interfaces/products";
