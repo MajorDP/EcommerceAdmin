@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
-import { getOrderById, getProductOwner } from "../api/services";
-import Spinner from "../components/Spinner";
 import { Link, useParams } from "react-router-dom";
-import { IProductOwner } from "../interfaces/users";
+
+import Map from "../components/Map";
+import Spinner from "../components/Spinner";
 import { calculateOrderTotalPrice, formatDate } from "../lib/helpers";
-import { IOrder } from "../interfaces/orders";
 import OrderImgDisplayFull from "../components/OrderImgDisplayFull";
 
-import { MapContainer, Marker, Popup } from "react-leaflet";
-import { TileLayer } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import { LatLngBoundsExpression, LatLngExpression } from "leaflet";
+import { IOrder } from "../interfaces/orders";
+import { IProductOwner } from "../interfaces/users";
+import { getOrderById, getProductOwner } from "../api/services";
+
 function Order() {
   const { id } = useParams();
 
@@ -32,18 +31,6 @@ function Order() {
     getOrder();
   }, [id]);
 
-  const bounds = [
-    [41.235, 22.357],
-    [44.216, 28.295],
-  ];
-
-  const mapCenter = order?.mapLocation?.[0]
-    ? [
-        parseFloat(order.mapLocation[0].lat),
-        parseFloat(order.mapLocation[0].lng),
-      ]
-    : [51.505, -0.09]; //default center
-
   if (isLoading) return <Spinner />;
   return (
     <div className="bg-slate-900 w-full h-screen text-white flex items-center justify-center">
@@ -52,16 +39,13 @@ function Order() {
           <Spinner />
         ) : (
           <>
-            {/* Order Details */}
             <p className="text-center font-semibold text-4xl p-1 bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
               Order: #{order?.id}
             </p>
             <div className="w-full flex flex-col lg:flex-row mt-5 text-lg">
-              {/* Image Section */}
               <div className="w-[50%] min-h-[10rem] max-h-[20rem] rounded-lg">
                 <OrderImgDisplayFull order={order} />
               </div>
-              {/* Order Info Section */}
               <div className="flex flex-col w-[60%] px-6 justify-between">
                 <div>
                   <div className="flex flex-row justify-between">
@@ -128,28 +112,56 @@ function Order() {
           </>
         )}
 
+        <div className="text-xs lg:text-lg w-full lg:w-[80%] m-auto">
+          <p className="text-center mt-6 py-2 text-xl bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent font-semibold">
+            Client's details
+          </p>
+          <div className="flex flex-row justify-between mt-5">
+            <div className="flex flex-col">
+              <p>
+                <span className="font-semibold">Client's name: </span>
+                <span>{order?.orderDetails[0].fullName}</span>
+              </p>
+              <p>
+                <span className="font-semibold">Email: </span>
+                <span>{order?.orderDetails[0].email}</span>
+              </p>
+              <p>
+                <span className="font-semibold">Phone number: </span>
+                <span>{order?.orderDetails[0].phone}</span>
+              </p>
+            </div>
+            <div className="flex flex-col">
+              <p>
+                <span className="font-semibold">Physical address: </span>
+                <span>{order?.orderDetails[0].physicalAddress}</span>
+              </p>
+              <p>
+                <span className="font-semibold">Postal code: </span>
+                <span>{order?.orderDetails[0].postalCode}</span>
+              </p>
+              <p>
+                <span className="font-semibold">Way of payment: </span>
+                {/*ONLY POSSIBLE OPTION CURRENTLY */}
+                <span>In chash, on delivery</span>
+              </p>
+            </div>
+          </div>
+        </div>
         <p className="text-center mt-6 py-2 text-xl bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent font-semibold">
           Location on map:
         </p>
-        <div className="mt-5 w-full h-full m-auto rounded-lg overflow-hidden border border-black">
-          <MapContainer
-            center={mapCenter as LatLngExpression}
-            zoom={13}
-            scrollWheelZoom={true}
-            style={{ height: "100%", width: "100%" }}
-            maxBounds={bounds as LatLngBoundsExpression}
-            minZoom={8}
-            maxBoundsViscosity={1.0}
-          >
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <Marker position={mapCenter as LatLngExpression} draggable={true}>
-              <Popup>You are here</Popup>
-            </Marker>
-          </MapContainer>
-        </div>
+        {order?.mapLocation !== undefined ? (
+          <>
+            <div className="mt-5 w-full h-full m-auto rounded-lg overflow-hidden border-2 border-black">
+              <Map mapLocation={order?.mapLocation[0]} />
+            </div>
+          </>
+        ) : (
+          <p className="text-red-500 font-semibold w-[50%] text-center m-auto flex items-center justify-center">
+            There was an error loading map location.
+          </p>
+        )}
       </div>
     </div>
   );

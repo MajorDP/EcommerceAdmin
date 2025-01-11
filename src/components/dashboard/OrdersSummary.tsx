@@ -41,7 +41,9 @@ function OrdersSummary() {
           </div>
           <ul
             className={`duration-300 ease-linear ${
-              isVisible ? "opacity-100 max-h-screen" : "opacity-0 max-h-0"
+              isVisible
+                ? "opacity-100 max-h-screen"
+                : "opacity-0 max-h-0 pointer-events-none"
             }  space-y-6 w-full max-w-md text-lg`}
           >
             <li>
