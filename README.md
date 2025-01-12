@@ -2,6 +2,10 @@
 
 This project is an **admin-side application** for managing an online store. The application provides admins with tools to efficiently manage orders, track store statistics, and handle offers. Built with scalability and usability in mind, it ensures a smooth experience for admins while overseeing store operations.
 
+**_LINK TO USER-SIDE APPLICATION:_**
+
+- https://github.com/MajorDP/Ecommerce
+
 ## Upcoming Features 🚀
 
 ### **1. Order Management**
