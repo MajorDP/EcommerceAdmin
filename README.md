@@ -6,6 +6,13 @@ This project is an **admin-side application** for managing an online store. The 
 
 - https://github.com/MajorDP/Ecommerce
 
+## Newest Changes 💫
+
+- /orders:
+  - Admins can see all orders, filter them based on date, and sort them based on price, id, count of products in order, etc.
+- /orders/id:
+  - Finished, added general order info, map location chosen by user (FROM THE OTHER APP) and info on all products
+
 ## Upcoming Features 🚀
 
 ### **1. Order Management**

@@ -216,6 +216,42 @@ export const getUnconfirmedOrders = async (from, to) => {
   return { data: unconfirmedOrders, count };
 };
 
+export const getOrders = async (from, to, dateFrom, sortValue) => {
+  let query = supabase
+    .from("orders")
+    .select("*", { count: "exact" })
+    .range(from, to);
+
+  //adding a sort by date if dateFrom is present
+  if (dateFrom > 0) {
+    const dateLimit = new Date();
+    dateLimit.setDate(dateLimit.getDate() - dateFrom);
+    query = query.gte("created_at", dateLimit.toISOString());
+  }
+
+  if (sortValue === "idAsc") {
+    query = query.order("id", { ascending: true });
+  } else if (sortValue === "idDesc") {
+    query = query.order("id", { ascending: false }); // Assuming the table has an "items_count" column
+  } else if (sortValue === "countAsc") {
+    query = query.order("productsCount", { ascending: true }); // Assuming the table has an "items_count" column
+  } else if (sortValue === "countDesc") {
+    query = query.order("productsCount", { ascending: false }); // Assuming the table has an "items_count" column
+  } else if (sortValue === "priceAsc") {
+    query = query.order("totalPrice", { ascending: true }); // Assuming the table has an "items_count" column
+  } else if (sortValue === "priceDesc") {
+    query = query.order("totalPrice", { ascending: false }); // Assuming the table has an "items_count" column
+  }
+
+  const { data: orders, count, error } = await query;
+
+  if (error) {
+    console.log(`ERROR FETCHING ORDERS DATA: `, error.message);
+    return [];
+  }
+  return { data: orders, count };
+};
+
 export const getOrdersByStatus = async (status, from, to) => {
   let {
     data: orders,
