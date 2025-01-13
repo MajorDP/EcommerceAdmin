@@ -27,17 +27,17 @@ function App() {
             <Route index element={<Orders />} />
             <Route path=":id" element={<Order />} />
             <Route path="edit/:id" element={<EditOrderStatus />} />
-            <Route
-              path="unconfirmed"
-              element={<OrdersList status="Unconfirmed" />}
-            />
-            <Route path="shipping" element={<OrdersList status="Shipping" />} />
-            <Route
-              path="delivered"
-              element={<OrdersList status="Delivered" />}
-            />
-            <Route path="rejected" element={<OrdersList status="Rejected" />} />
           </Route>
+          <Route
+            path="/unconfirmed"
+            element={<OrdersList status="Unconfirmed" />}
+          />
+          <Route path="shipping" element={<OrdersList status="Shipping" />} />
+          <Route
+            path="/delivered"
+            element={<OrdersList status="Delivered" />}
+          />
+          <Route path="/rejected" element={<OrdersList status="Rejected" />} />
 
           <Route path="/statistics" element={<Statistics />} />
           <Route path="/activity" element={<Activity />} />

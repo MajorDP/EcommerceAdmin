@@ -16,6 +16,8 @@ function OrderImgDisplayFull({
   const [currentIndex, setCurrentIndex] = useState(0);
   const imgLength = order.items.length;
 
+  console.log(order);
+
   useEffect(() => {
     setCurrentIndex(currentProduct || 0); // syncing currentIndex when currentProduct changes
   }, [currentProduct]);
@@ -45,6 +47,7 @@ function OrderImgDisplayFull({
       <div className="w-full h-[20rem] flex flex-col items-center rounded-lg">
         <img
           src={order.items[currentIndex].options.img}
+          alt={order.items[currentIndex].options.type}
           className="rounded-lg object-contain h-full m-auto w-full"
         />
         <p className="h-[20%]">

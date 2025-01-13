@@ -285,6 +285,7 @@ export const getOrderById = async (id) => {
 
   return order;
 };
+
 export const updateOrderStatus = async (id, updatedStatus, orderedItems) => {
   console.log("Ordered Items:", orderedItems);
 
