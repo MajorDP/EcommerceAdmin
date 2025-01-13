@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import Spinner from "../components/Spinner";
 
@@ -15,6 +15,7 @@ import ProductsInOrder from "../components/ProductsInOrder";
 import Map from "../components/Map";
 
 function EditOrderStatus() {
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const [order, setOrder] = useState<IOrder | null>(null);
@@ -62,6 +63,7 @@ function EditOrderStatus() {
       setError(error.message);
       return;
     } else {
+      navigate(`/orders/${id}`);
       console.log("awawa");
     }
   };

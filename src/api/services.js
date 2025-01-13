@@ -353,7 +353,6 @@ export const updateOrderStatus = async (id, updatedStatus, orderedItems) => {
   if (error) {
     return { error: { message: "Order status update failed." } };
   } else {
-    window.location.href = `/orders/${id}`;
     return {
       error: null,
     };
