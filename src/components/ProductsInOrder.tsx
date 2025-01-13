@@ -12,14 +12,13 @@ interface IProductsInOrder {
 function ProductsInOrder({ order, productOwner }: IProductsInOrder) {
   const [currentProduct, setCurrentProduct] = useState(0);
 
-  // Ensure that ProductInfo gets a fresh reference each time currentProduct changes
   const currentItem = { ...order.items[currentProduct] };
 
   return (
     <>
-      <p className="text-center mt-6 py-2 text-xl bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent font-semibold">
+      <h2 className="text-center mt-6 py-2 text-xl bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent font-semibold">
         Products in order (detailed view)
-      </p>
+      </h2>
       <div className="w-full flex flex-col lg:flex-row mt-5 text-lg pb-10">
         <div className="w-[40%] min-h-[10rem] max-h-[20rem] rounded-lg">
           <OrderImgDisplayFull
@@ -28,7 +27,6 @@ function ProductsInOrder({ order, productOwner }: IProductsInOrder) {
             setCurrentProduct={setCurrentProduct}
           />
         </div>
-        {/* Pass currentItem to ProductInfo */}
         <ProductInfo item={currentItem} productOwner={productOwner} />
       </div>
     </>

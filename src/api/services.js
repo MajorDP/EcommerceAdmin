@@ -285,3 +285,94 @@ export const getOrderById = async (id) => {
 
   return order;
 };
+export const updateOrderStatus = async (id, updatedStatus, orderedItems) => {
+  console.log("Ordered Items:", orderedItems);
+
+  //in case of changing an order to Shipping (if the order is accepted), we first lower the products' available quantity in database that are being purchased
+  if (updatedStatus.status === "Shipping") {
+    //getting the current available quantities for all ordered items
+    const quantityCheckPromises = orderedItems.map(async (item) => {
+      const availableQuantity = await getCurrentAvailableQuantity(item.id);
+      return {
+        ...item,
+        currentAvailableQuantity: availableQuantity,
+      };
+    });
+
+    const updatedOrderedItems = await Promise.all(quantityCheckPromises);
+
+    //checking if any item has insufficient quantity
+    const isQuantityNotEnough = updatedOrderedItems.some(
+      (item) => item.currentAvailableQuantity - item.quantity < 0
+    );
+
+    if (isQuantityNotEnough) {
+      return {
+        error: {
+          message: "Not enough available quantity on one or more products.",
+        },
+      };
+    }
+
+    //uUpdating product quantities in parallel
+    const updatePromises = updatedOrderedItems.map(async (item) => {
+      const newAvailableQuantity =
+        item.currentAvailableQuantity - item.quantity;
+
+      return supabase
+        .from("products")
+        .update({ availableQuantity: newAvailableQuantity })
+        .eq("id", item.id);
+    });
+
+    const updateResults = await Promise.all(updatePromises);
+
+    //checking for errors in product updates
+    const hasUpdateErrors = updateResults.some((result) => result.error);
+    if (hasUpdateErrors) {
+      return {
+        error: {
+          message: "Failed to update product quantities.",
+        },
+      };
+    }
+  }
+
+  //updating the order's status
+  const { data, error } = await supabase
+    .from("orders")
+    .update({
+      status: updatedStatus.status,
+      statusReason: updatedStatus.reason,
+    })
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    return { error: { message: "Order status update failed." } };
+  } else {
+    window.location.href = `/orders/${id}`;
+    return {
+      error: null,
+    };
+  }
+};
+
+export const getCurrentAvailableQuantity = async (id) => {
+  const { data: product, error } = await supabase
+    .from("products")
+    .select("availableQuantity")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error(
+      `Failed to fetch available quantity for product ID ${id}:`,
+      error
+    );
+    return null;
+  }
+
+  return product?.availableQuantity || 0; // Return 0 if the quantity is unavailable
+};

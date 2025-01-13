@@ -6,7 +6,11 @@ import { Link } from "react-router-dom";
 
 import { IOrder } from "../interfaces/orders";
 import { getOrdersByStatus } from "../api/services";
-import { calculateOrderTotalPrice, formatDate } from "../lib/helpers";
+import {
+  calculateOrderItemsCount,
+  calculateOrderTotalPrice,
+  formatDate,
+} from "../lib/helpers";
 import OrderImgDisplayMini from "../components/OrderImgDisplayMini";
 
 interface IProps {
@@ -125,10 +129,10 @@ function OrdersList({ status }: IProps) {
                         </p>
                       </div>
                       <p className="w-[20%] text-center">
-                        {order.items.length}
+                        {calculateOrderItemsCount(order.items)}
                       </p>
                       <p className="w-[20%] text-center font-medium">
-                        {calculateOrderTotalPrice(order.items).toFixed(2)}
+                        {calculateOrderTotalPrice(order.items).toFixed(2)} $
                       </p>
                       <p className="w-[20%] text-center font-medium">
                         {formatDate(order.created_at)}

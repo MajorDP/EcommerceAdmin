@@ -39,9 +39,9 @@ function Order() {
           <Spinner />
         ) : (
           <>
-            <p className="text-center font-semibold text-4xl p-1 bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
+            <h1 className="text-center font-semibold text-4xl p-1 bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
               Order: #{order?.id}
-            </p>
+            </h1>
             {order !== null ? (
               <>
                 <OrderOverview

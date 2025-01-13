@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import { IOrder } from "../interfaces/orders";
 import { IProductOwner } from "../interfaces/users";
-import { calculateOrderTotalPrice, formatDate } from "../lib/helpers";
+import {
+  calculateOrderItemsCount,
+  calculateOrderTotalPrice,
+  formatDate,
+} from "../lib/helpers";
 import OrderImgDisplayFull from "./OrderImgDisplayFull";
 
 interface IOrderOverview {
@@ -12,9 +16,9 @@ interface IOrderOverview {
 function OrderOverview({ order, productOwner, id }: IOrderOverview) {
   return (
     <>
-      <p className="text-center mt-6 py-2 text-xl bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent font-semibold">
+      <h2 className="text-center mt-6 py-2 text-xl bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent font-semibold">
         Quick overview
-      </p>
+      </h2>
       <div>
         <div className="w-full flex flex-col lg:flex-row mt-5 text-lg">
           <div className="w-[50%] min-h-[10rem] max-h-[20rem] rounded-lg">
@@ -59,7 +63,7 @@ function OrderOverview({ order, productOwner, id }: IOrderOverview) {
               <div className="flex flex-row justify-between w-full mt-4">
                 <p>
                   <span className="font-semibold">Products count:</span>{" "}
-                  {order?.items.length}
+                  {calculateOrderItemsCount(order.items)}
                 </p>
                 <p>
                   <span className="font-semibold">Total:</span>{" "}

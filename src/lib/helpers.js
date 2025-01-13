@@ -18,3 +18,11 @@ export function calculateOrderTotalPrice(order) {
 
   return total;
 }
+
+export function calculateOrderItemsCount(items) {
+  const count = items.reduce((acc, item) => {
+    return acc + item.quantity;
+  }, 0);
+
+  return count;
+}

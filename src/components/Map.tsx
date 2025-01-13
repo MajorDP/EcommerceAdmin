@@ -29,9 +29,9 @@ function Map({ mapLocation, showHeader = false }: IMap) {
   return (
     <>
       {showHeader && (
-        <p className="text-center mt-6 py-2 text-xl bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent font-semibold">
+        <h2 className="text-center mt-6 py-2 text-xl bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent font-semibold">
           Location on map:
-        </p>
+        </h2>
       )}
       <div className="mt-5 w-full h-full m-auto rounded-lg overflow-hidden border-2 border-black">
         <MapContainer

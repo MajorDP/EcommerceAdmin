@@ -3,7 +3,11 @@ import { IOrder } from "../interfaces/orders";
 import { getOrders } from "../api/services";
 import { Link } from "react-router-dom";
 import OrderImgDisplayMini from "../components/OrderImgDisplayMini";
-import { calculateOrderTotalPrice, formatDate } from "../lib/helpers";
+import {
+  calculateOrderItemsCount,
+  calculateOrderTotalPrice,
+  formatDate,
+} from "../lib/helpers";
 import EmptyMessage from "../components/EmptyMessage";
 import Spinner from "../components/Spinner";
 
@@ -131,7 +135,7 @@ function Orders() {
                         </p>
                       </div>
                       <p className="w-[20%] text-center">
-                        {order.items.length}
+                        {calculateOrderItemsCount(order.items)}
                       </p>
                       <p className="w-[20%] text-center font-medium">
                         {calculateOrderTotalPrice(order.items).toFixed(2)}

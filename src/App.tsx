@@ -9,6 +9,7 @@ import LowStock from "./pages/LowStock";
 import LowStockProduct from "./pages/LowStockProduct";
 import OrdersList from "./pages/OrdersList";
 import Order from "./pages/Order";
+import EditOrderStatus from "./pages/EditOrderStatus";
 
 function App() {
   return (
@@ -16,29 +17,32 @@ function App() {
       <Routes>
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/lowstocks" element={<LowStock />} />
-          <Route path="/lowstocks/:id" element={<LowStockProduct />} />
-          <Route
-            path="/unconfirmed"
-            element={<OrdersList status={"Unconfirmed"} />}
-          />
-          <Route
-            path="/shipping"
-            element={<OrdersList status={"Shipping"} />}
-          />
-          <Route
-            path="/delivered"
-            element={<OrdersList status={"Delivered"} />}
-          />
-          <Route
-            path="/rejected"
-            element={<OrdersList status={"Rejected"} />}
-          />
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/orders/:id" element={<Order />} />
+
+          <Route path="/lowstocks">
+            <Route index element={<LowStock />} />
+            <Route path=":id" element={<LowStockProduct />} />
+          </Route>
+
+          <Route path="/orders">
+            <Route index element={<Orders />} />
+            <Route path=":id" element={<Order />} />
+            <Route path="edit/:id" element={<EditOrderStatus />} />
+            <Route
+              path="unconfirmed"
+              element={<OrdersList status="Unconfirmed" />}
+            />
+            <Route path="shipping" element={<OrdersList status="Shipping" />} />
+            <Route
+              path="delivered"
+              element={<OrdersList status="Delivered" />}
+            />
+            <Route path="rejected" element={<OrdersList status="Rejected" />} />
+          </Route>
+
           <Route path="/statistics" element={<Statistics />} />
           <Route path="/activity" element={<Activity />} />
         </Route>
+
         <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
