@@ -222,33 +222,33 @@ export const getOrders = async (from, to, dateFrom, sortValue) => {
     .select("*", { count: "exact" })
     .range(from, to);
 
-  //adding a sort by date if dateFrom is present
   if (dateFrom > 0) {
     const dateLimit = new Date();
     dateLimit.setDate(dateLimit.getDate() - dateFrom);
     query = query.gte("created_at", dateLimit.toISOString());
   }
 
-  if (sortValue === "idAsc") {
-    query = query.order("id", { ascending: true });
-  } else if (sortValue === "idDesc") {
-    query = query.order("id", { ascending: false }); // Assuming the table has an "items_count" column
-  } else if (sortValue === "countAsc") {
-    query = query.order("productsCount", { ascending: true }); // Assuming the table has an "items_count" column
-  } else if (sortValue === "countDesc") {
-    query = query.order("productsCount", { ascending: false }); // Assuming the table has an "items_count" column
-  } else if (sortValue === "priceAsc") {
-    query = query.order("totalPrice", { ascending: true }); // Assuming the table has an "items_count" column
-  } else if (sortValue === "priceDesc") {
-    query = query.order("totalPrice", { ascending: false }); // Assuming the table has an "items_count" column
+  const sortOptions = {
+    idAsc: { column: "id", ascending: true },
+    idDesc: { column: "id", ascending: false },
+    countAsc: { column: "productsCount", ascending: true },
+    countDesc: { column: "productsCount", ascending: false },
+    priceAsc: { column: "totalPrice", ascending: true },
+    priceDesc: { column: "totalPrice", ascending: false },
+  };
+
+  if (sortValue && sortOptions[sortValue]) {
+    const { column, ascending } = sortOptions[sortValue];
+    query = query.order(column, { ascending });
   }
 
   const { data: orders, count, error } = await query;
 
   if (error) {
-    console.log(`ERROR FETCHING ORDERS DATA: `, error.message);
+    console.error("ERROR FETCHING ORDERS DATA:", error.message);
     return [];
   }
+
   return { data: orders, count };
 };
 
@@ -374,5 +374,47 @@ export const getCurrentAvailableQuantity = async (id) => {
     return null;
   }
 
-  return product?.availableQuantity || 0; // Return 0 if the quantity is unavailable
+  return product?.availableQuantity || 0;
+};
+
+export const getProducts = async (from, to, filters) => {
+  let query = supabase
+    .from("products")
+    .select("*", { count: "exact" })
+    .range(from, to);
+
+  if (filters.dateFrom !== 0) {
+    const dateLimit = new Date();
+    dateLimit.setDate(dateLimit.getDate() - filters.dateFrom);
+    query = query.gte("created_at", dateLimit.toISOString());
+  }
+
+  if (filters.sortValue) {
+    const sortOptions = {
+      idAsc: { column: "id", ascending: true },
+      idDesc: { column: "id", ascending: false },
+      priceAsc: { column: "productPrice", ascending: true },
+      priceDesc: { column: "productPrice", ascending: false },
+      ratingAsc: { column: "productRating", ascending: true },
+      ratingDesc: { column: "productRating", ascending: false },
+      onSaleFalse: { column: "onSale", ascending: true },
+      onSaleTrue: { column: "onSale", ascending: false },
+      availableQuantityAsc: { column: "availableQuantity", ascending: true },
+      availableQuantityDesc: { column: "availableQuantity", ascending: false },
+    };
+
+    const { column, ascending } = sortOptions[filters.sortValue];
+    query = query.order(column, { ascending });
+  }
+
+  if (filters.searchValue) {
+    query = query.ilike("productName", `%${filters.searchValue.trim()}%`);
+  }
+
+  const { data: products, count, error } = await query;
+  if (error) {
+    console.log(`ERROR FETCHING PRODUCTS DATA: `, error.message);
+    return { data: [], count: 0 };
+  }
+  return { data: products, count };
 };

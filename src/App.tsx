@@ -10,6 +10,7 @@ import LowStockProduct from "./pages/LowStockProduct";
 import OrdersList from "./pages/OrdersList";
 import Order from "./pages/Order";
 import EditOrderStatus from "./pages/EditOrderStatus";
+import ProductsPage from "./pages/ProductsPage";
 
 function App() {
   return (
@@ -41,6 +42,9 @@ function App() {
 
           <Route path="/statistics" element={<Statistics />} />
           <Route path="/activity" element={<Activity />} />
+          <Route path="/products">
+            <Route index element={<ProductsPage />} />
+          </Route>
         </Route>
 
         <Route path="/login" element={<Login />} />

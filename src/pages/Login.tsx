@@ -2,8 +2,10 @@
 // @ts-nocheck
 import { useState } from "react";
 import { login } from "../api/auth";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
   async function handleSubmit(e) {
     e.preventDefault();
@@ -19,6 +21,8 @@ function Login() {
     if (error) {
       console.log(error);
       setError(error.message);
+    } else {
+      navigate("/");
     }
   }
 
@@ -38,6 +42,7 @@ function Login() {
             <label htmlFor="username">Username</label>
             <input
               id="username"
+              required
               name="username"
               className="border border-black rounded-md p-1 shadow-md"
             />
@@ -46,6 +51,7 @@ function Login() {
             <label htmlFor="password">Password</label>
             <input
               id="password"
+              required
               name="password"
               type="password"
               className="border border-black rounded-md p-1 shadow-md"

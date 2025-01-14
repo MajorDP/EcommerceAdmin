@@ -73,11 +73,8 @@ function LowStock() {
               </ul>
               <ul>
                 {sortedByQuantity?.map((product: Product) => (
-                  <Link to={`/lowstocks/${product.id}`}>
-                    <li
-                      key={product.id}
-                      className="shadow-2xl hover:scale-95 cursor-pointer duration-150 flex flex-row items-center justify-between bg-gradient-to-r from-red-400 to-red-500 mb-4 rounded-lg h-[130px]"
-                    >
+                  <Link to={`/lowstocks/${product.id}`} key={product.id}>
+                    <li className="shadow-2xl hover:scale-95 cursor-pointer duration-150 flex flex-row items-center justify-between bg-gradient-to-r from-red-400 to-red-500 mb-4 rounded-lg h-[130px]">
                       <div className="flex flex-row items-center justify-start w-[40%]">
                         <img
                           src={product.productImg[0]}

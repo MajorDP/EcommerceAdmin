@@ -22,7 +22,6 @@ export const login = async (user) => {
       "user",
       JSON.stringify({ username: userData.username })
     );
-    window.location.href = "/";
   } else {
     //if password not matching
     const error = {
@@ -34,7 +33,6 @@ export const login = async (user) => {
 
 export const logout = () => {
   sessionStorage.clear("user");
-  window.location.href = "/login";
 };
 
 export const checkSession = () => {

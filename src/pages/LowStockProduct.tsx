@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getProductById, getProductOwner } from "../api/services";
-import { Product } from "../interfaces/products";
+import { IProduct } from "../interfaces/products";
 import Spinner from "../components/Spinner";
 import { useParams } from "react-router-dom";
 import { IProductOwner } from "../interfaces/users";
@@ -11,7 +11,7 @@ import RemoveProductModal from "../components/modals/RemoveProductModal";
 function LowStockProduct() {
   const { id } = useParams();
 
-  const [product, setProduct] = useState<Product | null>(null);
+  const [product, setProduct] = useState<IProduct | null>(null);
   const [productOwner, setProductOwner] = useState<IProductOwner | null>(null);
   const [modalState, setModalState] = useState<string | null>(null);
 
@@ -19,12 +19,12 @@ function LowStockProduct() {
 
   useEffect(() => {
     async function getProduct() {
-      const product: Product = await getProductById(id);
+      const product: IProduct = await getProductById(id);
       if (product.listedBy !== null) {
         const owner = await getProductOwner(product.listedBy);
         setProductOwner(owner as IProductOwner);
       }
-      setProduct(product as Product);
+      setProduct(product as IProduct);
       setIsLoading(false);
     }
     getProduct();
