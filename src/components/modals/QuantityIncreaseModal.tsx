@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { updateQuantity } from "../../api/services";
+import { useNavigate } from "react-router-dom";
 
 interface IQuantityIncreaseModal {
   setModalState: React.Dispatch<React.SetStateAction<string | null>>;
@@ -13,6 +14,7 @@ function QuantityIncreaseModal({
 }: IQuantityIncreaseModal) {
   const [quantity, setQuantity] = useState(currQuantity);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleUpdate = async () => {
     if (quantity === currQuantity) {
@@ -23,6 +25,13 @@ function QuantityIncreaseModal({
     if (error) {
       setError(error.message);
       return;
+    } else {
+      //if we're updating a product which was considered low on stock (quantity < 10, updated to more than 10, it is no longer in lowstocks table => we leave the page)
+      if (currQuantity < 10 && quantity > 10) {
+        navigate("/");
+      } else {
+        window.location.reload();
+      }
     }
   };
   return (

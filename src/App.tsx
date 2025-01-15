@@ -11,6 +11,7 @@ import OrdersList from "./pages/OrdersList";
 import Order from "./pages/Order";
 import EditOrderStatus from "./pages/EditOrderStatus";
 import ProductsPage from "./pages/ProductsPage";
+import Product from "./pages/Product";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
           <Route path="/activity" element={<Activity />} />
           <Route path="/products">
             <Route index element={<ProductsPage />} />
+            <Route path=":id" element={<Product />} />
           </Route>
         </Route>
 

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { IOrder } from "../interfaces/orders";
 import { IProductOwner } from "../interfaces/users";
 import OrderImgDisplayFull from "./OrderImgDisplayFull";
-import ProductInfo from "./ProductInfo";
+import OrderedProductInfo from "./OrderedProductInfo";
 
 interface IProductsInOrder {
   order: IOrder;
@@ -27,7 +27,7 @@ function ProductsInOrder({ order, productOwner }: IProductsInOrder) {
             setCurrentProduct={setCurrentProduct}
           />
         </div>
-        <ProductInfo item={currentItem} productOwner={productOwner} />
+        <OrderedProductInfo item={currentItem} productOwner={productOwner} />
       </div>
     </>
   );

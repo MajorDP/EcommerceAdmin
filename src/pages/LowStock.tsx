@@ -51,7 +51,7 @@ function LowStock() {
     <div className="bg-slate-900 w-full h-screen text-white overflow-y-hidden">
       <div className="w-[80%] h-screen m-auto overflow-y-scroll scrollbar-hide">
         <p className="text-center font-semibold text-4xl p-1 bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
-          Low Stocks
+          Low Stocks: Quick access
         </p>
         {!isLoading ? (
           sortedByQuantity?.length > 0 ? (

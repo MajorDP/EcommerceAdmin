@@ -117,13 +117,6 @@ export const updateQuantity = async (productId, quantity) => {
     return {
       message: `Quantity update for Product #${productId} failed.`,
     };
-  } else {
-    //if quantity goes above what is considered LOW STOCK, then we redirect to "/", otherwise "/lowstocks/id"
-    if (quantity > 10) {
-      window.location.href = "/";
-    } else {
-      window.location.href = `/lowstocks/${productId}`;
-    }
   }
 
   return error;

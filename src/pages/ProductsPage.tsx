@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import EmptyMessage from "../components/EmptyMessage";
 import Spinner from "../components/Spinner";
@@ -8,8 +8,6 @@ import { getProducts } from "../api/services";
 import { IProduct } from "../interfaces/products";
 
 function ProductsPage() {
-  const inputRef = useRef<NodeJS.Timeout | null>(null);
-
   const [productsData, setProductsData] = useState<{
     data: IProduct[];
     count: number;
@@ -62,11 +60,7 @@ function ProductsPage() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
-    if (inputRef.current) {
-      clearTimeout(inputRef.current);
-    }
-
-    inputRef.current = setTimeout(() => {
+    setTimeout(() => {
       setFilters({ ...filters, searchValue: value });
     }, 500);
   };
